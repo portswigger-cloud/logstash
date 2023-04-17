@@ -1,0 +1,70 @@
+name: logstash
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  LOGSTASH_VERSION: "8.7.0"
+
+jobs:
+  semgrep-sast-scan:
+    name: semgrep sast scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep
+    if: (github.actor != 'dependabot[bot]')
+    steps:
+      - name: checkout
+        id: checkout
+        uses: actions/checkout@v3
+      - name: semgrep scan
+        id: semgrep-scan
+        run: |
+          mkdir -p semgrep/results
+          semgrep --config auto --error --json --output=semgrep/results/semgrep.json
+      - name: upload semgrep results
+        id: upload-semgrep-results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: semgrep-results
+          path: semgrep/results/
+
+
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    needs:
+      - semgrep-sast-scan
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: log in to the container registry
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: extract metadata (tags, labels) for docker
+        id: meta
+        uses: docker/metadata-action@v4.3.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: build and push docker image
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: logstash_version=8.7.0:${{ env.LOGSTASH_VERSION }}
