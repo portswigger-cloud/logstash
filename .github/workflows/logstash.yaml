@@ -67,4 +67,4 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: logstash_version=8.7.0:${{ env.LOGSTASH_VERSION }}
+          build-args: logstash_version=${{ env.LOGSTASH_VERSION }}
