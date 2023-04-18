@@ -1,0 +1,17 @@
+source
+| extend TimeGenerated = ls_timestamp
+| parse message
+with SyslogFormat: string 
+    ":"     MessageId: int
+    "|"     EventVendor: string
+    "|"     EventApp: string
+    "|"     EventVersion: string
+    "|"     EventName: string
+    "|"     RuleName: string
+    "|"     Number: int
+    "|"     Message: string
+| project-away message
+| project-away Number
+| project-away timestamp
+| project-away timestamp8601
+| project-away ls_timestamp

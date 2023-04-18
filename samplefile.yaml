@@ -1,0 +1,31 @@
+---
+image: "ghcr.io/portswigger-cloud/logstash"
+imageTag: "main"
+imagePullPolicy: "Always"
+
+service:
+  annotations: {}
+  type: ClusterIP
+  ports:
+    - name: syslog
+      port: 514
+      protocol: TCP
+      targetPort: 8514
+
+logstashConfig:
+  logstash.yml: |
+    http.host: "0.0.0.0"
+    pipeline.ecs_compatibility: disabled
+logstashPipeline:
+  uptime.conf: |
+    input {
+      syslog {
+        port => 8514
+        }
+    }
+    output {
+        microsoft-sentinel-logstash-output-plugin {
+          create_sample_file => true
+          sample_file_path => "/tmp"
+        }
+    }

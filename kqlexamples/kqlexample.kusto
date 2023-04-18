@@ -1,0 +1,12 @@
+source
+| extend TimeGenerated = ls_timestamp
+| parse message
+    with    MessageId: int
+    "|"     EventVendor: string
+    "|"     EventApp: string
+    "|"     EventVersion: string
+    "|"     EventName: string
+    "|"     RuleName: string
+    "|"     Number: string
+    "|"     Message: string
+| project-away message
