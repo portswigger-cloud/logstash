@@ -12,13 +12,13 @@ To run this locally
 
 **Steps:**
 
-# set up the kuberne'test cluster
+Set up the kuberne'test cluster.
 
 [org-118997105@github.com:portswigger-cloud/saas-platform-poc.git]
 
 > limactl start --name=falco-k8s template://k8s --tty=false
 
-#export kubeconfig.yaml which contains certs etc into local shell
+Export kubeconfig.yaml which contains certs etc into local shell.
 
 > mkdir -p "${HOME}/.lima/falco-k8s/conf"
 
@@ -28,7 +28,7 @@ To run this locally
 
 > chmod 0600 ${KUBECONFIG}
 
-# run falco on mac with this driver modern-bpf and with falcosidekick installed
+Run falco on mac with this driver modern-bpf and with falcosidekick installed.
 
 > helm install -f falco.yaml falco falcosecurity/falco --namespace falco --create-namespace
 
