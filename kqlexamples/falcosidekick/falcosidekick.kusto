@@ -1,0 +1,6 @@
+source
+| extend TimeGenerated = ls_timestamp
+| extend message = parse_json(message)
+| project-away timestamp
+| project-away timestamp8601
+| project-away ls_timestamp
