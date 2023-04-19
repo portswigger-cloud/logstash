@@ -17,7 +17,7 @@ logstashConfig:
     http.host: "0.0.0.0"
     pipeline.ecs_compatibility: disabled
 logstashPipeline:
-  uptime.conf: |
+  azure_sentinel.conf: |
     input {
       syslog {
         port => 8514
