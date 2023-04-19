@@ -58,7 +58,7 @@ helm repo add elastic https://helm.elastic.co
 helm upgrade -f logstash.yaml logstash elastic/logstash --namespace observability --create-namespace
 ```
 
-Voila! If you now jump onto the cluster with k9s you should see a up and running falco and logstash, where logstash will be listening for logs from falco and forwarding them to Azure Sentinel.
+Voila! If you now jump onto the cluster with k9s you should see an up and running falco and logstash, where logstash will be listening for logs from falco and forwarding them to Azure Sentinel.
 
 ![k9s](images/k9s.png)
 
