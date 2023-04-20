@@ -55,6 +55,10 @@ helm install -f falco.yaml falco falcosecurity/falco --namespace falco --create-
 Then add and install the logstash container:
 ```shell
 helm repo add elastic https://helm.elastic.co
+helm install -f logstash.yaml logstash elastic/logstash --namespace observability --create-namespace
+```
+You can release new versions of the chart like this:
+```shell
 helm upgrade -f logstash.yaml logstash elastic/logstash --namespace observability --create-namespace
 ```
 
