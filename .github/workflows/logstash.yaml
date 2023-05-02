@@ -75,3 +75,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: logstash_version=${{ env.LOGSTASH_VERSION }}
+
+  post-to-a-slack-channel-on-failure:
+    if: ${{ failure() }}
+    uses: ./.github/workflows/shared-on-fail-slack-notifier.yaml@main
+    needs:  build-and-push-image
+    secrets: inherit
