@@ -3,7 +3,6 @@
 name: shared slack notifier
 
 on:
-
   workflow_call:
     secrets:
       PLATFORM_ALERT_SLACK_CHANNEL_ID:
@@ -21,7 +20,7 @@ jobs:
     steps:
       - name: build
         id: build
-        uses: slackapi/slack-github-action@v1.23.0
+        uses: slackapi/slack-github-action@/e28cf165c92ffef168d23c5c9000cffc8a25e117
         with:
           channel-id: ${{ secrets.PLATFORM_ALERT_SLACK_CHANNEL_ID }}
           payload: |
